@@ -28,8 +28,23 @@ public class enterRoom extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.setCharacterEncoding("UTF-8");
+
+		String name = request.getParameter("name"); // プレイヤー名の入力を取得
+		String roomId = request.getParameter("roomId"); // roomIｄの入力を取得
+		int numOfUser = 2;
+
+		request.setAttribute("name", name);
+		request.setAttribute("roomId", roomId);
+		request.setAttribute("numOfUser", numOfUser);
+
+		boolean hasTheGameStarted = false; // ゲームが始まっているか(とりあえず、常に始まっていない状態にしている)
+
+		if (hasTheGameStarted) {
+			request.getRequestDispatcher("/WEB-INF/view/makeHint.jsp").forward(request, response);
+		} else {
+			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response); //ゲームが始まっていない場合
+		}
 	}
 
 	/**
@@ -42,14 +57,14 @@ public class enterRoom extends HttpServlet {
 
 		String name = request.getParameter("name"); // プレイヤー名の入力を取得
 		String roomId = request.getParameter("roomId"); // roomIｄの入力を取得
+		int numOfUser = 2; // とりあえず「1」
 
 		request.setAttribute("name", name);
 		request.setAttribute("roomId", roomId);
+		request.setAttribute("numOfUser", numOfUser);
 
 		// プレイヤー名：aa、ルームID：00が入力されたときのみ「waitPlayer.jsp」へ
 		if (name.equals("aa") == true && roomId.equals("00") == true) {
-			request.setAttribute("name", name);
-			request.setAttribute("roomId", roomId);
 			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
 
 		} else if (name.equals("aa") == false && roomId.equals("00") == true) {
