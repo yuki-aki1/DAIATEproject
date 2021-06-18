@@ -3,7 +3,7 @@
 <% String nameError = (String)request.getAttribute("nameError"); %>
 <% String roomIdError = (String)request.getAttribute("roomIdError"); %>
 <!DOCTYPE html>
-<html>
+<html> 
 <head>
 <meta charset="UTF-8">
 <title>ホーム画面</title>
