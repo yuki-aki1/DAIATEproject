@@ -6,7 +6,7 @@
 <html> 
 <head>
 <meta charset="UTF-8">
-<title>ホーム画面</title>
+<title>ホーム画面ああああああああああああああああああああああああああああ</title>
 </head>
 <body>
 
