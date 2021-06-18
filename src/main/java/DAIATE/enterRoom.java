@@ -33,6 +33,9 @@ public class enterRoom extends HttpServlet {
 		String name = request.getParameter("name"); // プレイヤー名の入力を取得
 		String roomId = request.getParameter("roomId"); // roomIｄの入力を取得
 		int numOfUser = 2;
+		name ="aaaaa";
+		roomId="000000";
+		
 
 		request.setAttribute("name", name);
 		request.setAttribute("roomId", roomId);
