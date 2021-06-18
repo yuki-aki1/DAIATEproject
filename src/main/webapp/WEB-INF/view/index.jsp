@@ -6,7 +6,8 @@
 <html> 
 <head>
 <meta charset="UTF-8">
-<title>ホーム画面いいいいいいいいいいいいいいいい</title>
+
+<title>ホーム画面</title>
 </head>
 <body>
 
