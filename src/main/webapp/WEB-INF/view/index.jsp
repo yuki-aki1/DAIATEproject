@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<% String nameError = (String)request.getAttribute("nameError"); %>
-<% String roomIdError = (String)request.getAttribute("roomIdError"); %>
+<%
+String[] errorTexts = (String[]) request.getAttribute("errorTexts");
+%>
 <!DOCTYPE html>
-<html> 
+<html>
 <head>
 <meta charset="UTF-8">
-<title>ホーム画面いいいいいいいいいいいいいいいい</title>
+
+<title>ホーム画面</title>
 </head>
 <body>
 
@@ -26,18 +28,16 @@
 		<p>
 			ルームID：<input type="text" name="roomId">
 		</p>
-		<%--ルームIDが存在しないエラーメッセージ表示 --%>
-		<% if(nameError != null){ %>
-		<p>
-			<font color="red">ルームIDが存在しません</font>
-		</p>
-		<%} %>
-		<%--プレイヤー名が既に存在しているエラーメッセージ表示 --%>
-		<% if(roomIdError != null){ %>
-		<p>
-			<font color="red">このプレイヤー名は既にルームで使用されています。</font>
-		</p>
-		<%} %>
+		<%-- エラーメッセージ表示 --%>
+		<%
+		if (errorTexts != null) {
+			for (String errorText : errorTexts) {
+		%>
+		<%=errorText%>
+		<%
+		}
+		}
+		%>
 
 		<p>
 			<input type="submit" value="ルームを作る">
