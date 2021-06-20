@@ -7,6 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import dbAccess.Player;
 
 /**
  * Servlet implementation class makeRoom
@@ -40,11 +43,14 @@ public class makeRoom extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		String name = request.getParameter("name");
-		String roomId = "1"; // とりあえず「1」
+		String playeName = request.getParameter("name");
+		String roomId = utility.RandomGenerate.getRandomString(6);
+		HttpSession session = request.getSession(true);
+		String sessionId = session.getId();
+		Player player = new Player(playeName, roomId, sessionId);
 		int numOfUser = 1; // とりあえず「1」
 
-		request.setAttribute("name", name);
+		request.setAttribute("name", playeName);
 		request.setAttribute("roomId", roomId);
 		request.setAttribute("numOfUser", numOfUser);
 
