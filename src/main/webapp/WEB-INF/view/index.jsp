@@ -33,7 +33,7 @@ String[] errorTexts = (String[]) request.getAttribute("errorTexts");
 		if (errorTexts != null) {
 			for (String errorText : errorTexts) {
 		%>
-		<%=errorText%>
+		<font color="red"><%=errorText%></font><br>
 		<%
 		}
 		}
