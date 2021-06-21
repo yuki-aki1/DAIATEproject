@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <%--
 テストデータ
 response.setIntHeader("Refresh", 1); 
@@ -24,6 +25,7 @@ String playerNamesList = String.join(",", playerNames);
 <title>ルーム待機画面</title>
 </head>
 <body>
+
 
 	<%-- ルームID表示 --%>
 	<jsp:include page="./include/includeRoomId.jsp">
