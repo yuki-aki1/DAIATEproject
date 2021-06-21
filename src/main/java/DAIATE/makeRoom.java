@@ -48,6 +48,7 @@ public class makeRoom extends HttpServlet {
 			int playerIndex = 0;
 			for (int i = 0; i < players.length; i++) {
 				String name = players[i].getPlayerName();
+				System.out.println(name);
 				if (name.equals(hostPlayerName)) {
 					playerNames.add(0, name);					
 				} else {

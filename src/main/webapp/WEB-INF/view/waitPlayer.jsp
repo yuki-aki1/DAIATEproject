@@ -2,21 +2,20 @@
 	pageEncoding="UTF-8"%>
 
 <%--
-//テストデータ
-response.setIntHeader("Refresh", 1); 
 String roomId = "0002";
 String[] playerNames = { "A" ,"B","C","D","E"};
 int playerIndex = 2;
 
 String playerNamesList = String.join(",", playerNames);
 --%>
+
 <%
 response.setIntHeader("Refresh", 1); 
 String roomId = (String) request.getAttribute("roomId");
 String[] playerNames = (String[]) request.getAttribute("playerNames");
 int playerIndex = (int) request.getAttribute("playerIndex");
 String playerNamesList = String.join(",", playerNames);
- %>
+%>
 
 <!DOCTYPE html>
 <html>
