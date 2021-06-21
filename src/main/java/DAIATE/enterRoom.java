@@ -65,6 +65,9 @@ public class enterRoom extends HttpServlet {
 		request.setAttribute("name", name);
 		request.setAttribute("roomId", roomId);
 		request.setAttribute("numOfUser", numOfUser);
+		
+		String[] errorText = {"エラー１","エラー２"};
+		request.setAttribute("errorText", errorText);
 
 		// プレイヤー名：aa、ルームID：00が入力されたときのみ「waitPlayer.jsp」へ
 		if (name.equals("aa") == true && roomId.equals("00") == true) {
