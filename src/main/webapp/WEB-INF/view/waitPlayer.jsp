@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%response.setIntHeader("Refresh", 1);%>
-<% String name = (String)request.getAttribute("name"); %>
+<% String[] playerNames = (String[])request.getAttribute("playerNames"); %>
 <% String roomId  = (String)request.getAttribute("roomId"); %>
-<% int numOfUser = ((Integer)(request.getAttribute("numOfUser"))).intValue(); %>
+<% int playerIndex = ((Integer)(request.getAttribute("playerIndex"))).intValue(); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,15 +11,26 @@
 </head>
 <body>
 
-	<% if(roomId != null){ %>
-		<p>ルームID:<%= roomId %></p>
-	<%} %>
-
-	<% for (int i = 0; i < numOfUser; i++) { %>
-		<% if(name != null){ %>
-			<p>プレイヤー名:<%= name %></p>
-		<% } %>
-	<% } %>
+	<%
+	
+	if (roomId != null) { 
+		out.print("<p>ルームID:" + roomId + "<p>");
+	}
+	
+	if (playerNames != null) {
+		for (int i = 0; i < playerNames.length; i++) {
+			out.print("<p>プレイヤー名:" + playerNames[i]);
+			if (i == 0) {
+				out.print("(ホスト)");
+			}
+			if (i == playerIndex) {
+				out.print("(あなた)");
+			}
+			out.print("<p>");
+		}
+	}
+	
+	%>
 
 </body>
 </html>

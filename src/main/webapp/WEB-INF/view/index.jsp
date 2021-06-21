@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%response.setIntHeader("Refresh", 1);%>
 <% String nameError = (String)request.getAttribute("nameError"); %>
 <% String roomIdError = (String)request.getAttribute("roomIdError"); %>
 <!DOCTYPE html>
