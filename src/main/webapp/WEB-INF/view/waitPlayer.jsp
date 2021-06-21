@@ -4,8 +4,8 @@
 <%--
 
 String roomId = "0002";
-String[] playerNames = { "A" };
-int playerIndex = 0;
+String[] playerNames = { "A" ,"B","C","D","E"};
+int playerIndex = 2;
 
 String playerNamesList = String.join(",", playerNames);
 --%>
