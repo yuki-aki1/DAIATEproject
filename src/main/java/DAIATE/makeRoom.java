@@ -34,6 +34,7 @@ public class makeRoom extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			String roomId = (String) session.getAttribute("roomId");
