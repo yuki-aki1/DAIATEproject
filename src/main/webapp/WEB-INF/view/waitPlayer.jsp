@@ -2,11 +2,11 @@
 	pageEncoding="UTF-8"%>
 
 <%--
-テストデータ
+//テストデータ
 response.setIntHeader("Refresh", 1); 
 String roomId = "0002";
-String[] playerNames = { "A", "B", "C", "D", "E" };
-int playerIndex = 2;
+String[] playerNames = { "A" };
+int playerIndex = 0;
 
 String playerNamesList = String.join(",", playerNames);
 --%>
