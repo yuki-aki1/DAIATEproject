@@ -12,30 +12,29 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dbAccess.Player;
-import dbAccess.Room;
 
 /**
- * Servlet implementation class makeRoom
+ * Servlet implementation class waitRoom
  */
-@WebServlet("/makeRoom")
-public class makeRoom extends HttpServlet {
+@WebServlet("/waitRoom")
+public class waitRoom extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public makeRoom() {
-		super();
-	}
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public waitRoom() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-<<<<<<< HEAD
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
+
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			String roomId = (String) session.getAttribute("roomId");
@@ -49,7 +48,6 @@ public class makeRoom extends HttpServlet {
 			int playerIndex = 0;
 			for (int i = 0; i < players.length; i++) {
 				String name = players[i].getPlayerName();
-				System.out.println(name);
 				if (name.equals(hostPlayerName)) {
 					playerNames.add(0, name);					
 				} else {
@@ -64,49 +62,22 @@ public class makeRoom extends HttpServlet {
 			request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));
 			request.setAttribute("playerIndex", playerIndex);
 
+			System.out.println("waitRoomのdoGet");
+
+			
 			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);			
 		}
 		else  {
 			 request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
 		}
-=======
-		
->>>>>>> refs/heads/develop
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-
-		request.setCharacterEncoding("UTF-8");
-
-		String playerName = request.getParameter("name");
-		String roomId = utility.RandomGenerate.getRandomString(6);
-		HttpSession session = request.getSession(true);
-		String sessionId = session.getId();
-		
-		session.setAttribute("roomId", roomId);
-		session.setAttribute("hostPlayerName", playerName);
-		session.setAttribute("playerName", playerName);
-		
-		new Room(roomId, playerName);
-		new Player(playerName, roomId, sessionId);
-		int playerIndex = 0;
-		
-		String[] playerNames = {playerName};
-
-		request.setAttribute("roomId", roomId);
-		request.setAttribute("playerNames", playerNames);
-		request.setAttribute("playerIndex", playerIndex);
-	
-//		waitRoom wr = new waitRoom();
-//		wr.doGet(request, response);
-		
-//		request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
-		request.getRequestDispatcher("/waitRoom").forward(request, response);
-
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

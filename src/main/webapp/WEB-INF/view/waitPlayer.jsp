@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%--
+
 String roomId = "0002";
 String[] playerNames = { "A" ,"B","C","D","E"};
 int playerIndex = 2;
@@ -10,7 +11,8 @@ String playerNamesList = String.join(",", playerNames);
 --%>
 
 <%
-response.setIntHeader("Refresh", 1); 
+// response.setIntHeader("Refresh", 5);
+response.setHeader("URL", "");
 String roomId = (String) request.getAttribute("roomId");
 String[] playerNames = (String[]) request.getAttribute("playerNames");
 int playerIndex = (int) request.getAttribute("playerIndex");
@@ -20,7 +22,7 @@ String playerNamesList = String.join(",", playerNames);
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" http-equiv="refresh" content="3;URL=./waitRoom">
 <title>ルーム待機画面</title>
 </head>
 <body>
