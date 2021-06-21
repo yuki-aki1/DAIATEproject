@@ -1,9 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%response.setIntHeader("Refresh", 1);%>
-<% String name = (String)request.getAttribute("name"); %>
-<% String roomId  = (String)request.getAttribute("roomId"); %>
-<% int numOfUser = ((Integer)(request.getAttribute("numOfUser"))).intValue(); %>
+
+<%--
+テストデータ
+response.setIntHeader("Refresh", 1); 
+String roomId = "0002";
+String[] playerNames = { "A", "B", "C", "D", "E" };
+int playerIndex = 2;
+
+String playerNamesList = String.join(",", playerNames);
+--%>
+<%
+response.setIntHeader("Refresh", 1); 
+String roomId = (String) request.getAttribute("roomId");
+String[] playerNames = (String[]) request.getAttribute("playerNames");
+int playerIndex = (int) request.getAttribute("playerIndex");
+String playerNamesList = String.join(",", playerNames);
+ %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,15 +26,38 @@
 </head>
 <body>
 
-	<% if(roomId != null){ %>
-		<p>ルームID:<%= roomId %></p>
-	<%} %>
 
-	<% for (int i = 0; i < numOfUser; i++) { %>
-		<% if(name != null){ %>
-			<p>プレイヤー名:<%= name %></p>
-		<% } %>
-	<% } %>
+	<%-- ルームID表示 --%>
+	<jsp:include page="./include/includeRoomId.jsp">
+		<jsp:param name="roomId" value="<%=roomId%>" />
+	</jsp:include>
+	<br>
+
+	<%--  プレイヤー一覧表示 --%>
+	<jsp:include page="./include/includePlayerName.jsp">
+		<jsp:param name="playerIndex" value="<%=playerIndex%>" />
+		<jsp:param name="playerNamesList" value="<%=playerNamesList%>" />
+	</jsp:include>
+	<br>
+	
+	<%-- 退室ボタン表示 --%>
+	<form method="POST" action="./home">
+		<input type="submit" value="退室">
+	</form>
+	<br>
+	
+	<%-- ゲーム開始ボタン表示 --%>
+	<%
+	if (playerIndex == 0) {
+	%>
+	<form method="POST" action="./startGame">
+		<p>
+			<input type="submit" value="ゲーム開始">
+		</p>
+		<%
+		}
+		%>
+	</form>
 
 </body>
 </html>
