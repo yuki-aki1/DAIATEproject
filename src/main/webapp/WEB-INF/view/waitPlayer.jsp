@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 
 <%--
-// テストデータ
-response.setIntHeader("Refresh", 5); 
 
 String roomId = "0002";
 String[] playerNames = { "A" };
