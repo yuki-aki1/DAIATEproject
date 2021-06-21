@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%
+    pageEncoding="UTF-8"%>
+    <%
 // テストデータ
 response.setIntHeader("Refresh", 63);
 String roomId = "0002";
@@ -9,6 +9,7 @@ int playerIndex = 2;
 int answerPlayerIndex = 4;
 String subject = "オリンピック";
 String[] hints ={"バスケ","東京","4年","東京",""};
+String answer = "オリンピック";
 
 String playerNamesList = String.join(",", playerNames);
 String hintsList = String.join(",", hints);
@@ -22,6 +23,7 @@ int playerIndex = (int) request.getAttribute("playerIndex");
 int answerPlayerIndex = (int) request.getAttribute("answerPlayerIndex");
 String subject = (String) request.getAttribute("subject");
 String[] hints = (String[]) request.getAttribute("hints");
+String answer = (String) request.getAttribute("answer");
 
 String playerNamesList = String.join(",", playerNames);
 String hintsList = String.join(",", hints);
@@ -49,9 +51,12 @@ String hintsList = String.join(",", hints);
 	</jsp:include>
 
 
-	<%-- 時間表示  --%>
-	<jsp:include page="./include/includeTime.jsp" />
+	<%-- 退室ボタン表示 --%>
+	<form method="POST" action="./home">
+		<input type="submit" value="退室">
+	</form>
 	<p>---------------------------------------------------</p>
+
 
 	<%-- ヒント表示  --%>
 	<jsp:include page="./include/includeHint.jsp">
@@ -59,38 +64,37 @@ String hintsList = String.join(",", hints);
 		<jsp:param name="answerPlayerIndex" value="<%=answerPlayerIndex%>" />
 		<jsp:param name="playerNamesList" value="<%=playerNamesList%>" />
 		<jsp:param name="hintsList" value="<%=hintsList%>" />
+		<jsp:param name="answer" value="<%=answer%>" />
 	</jsp:include>
 	<p>---------------------------------------------------</p>
 
 
-	<%-- ヒント出す人に対する表示 --%>
-	<%
-	if (playerIndex != answerPlayerIndex) {
-	%>
-	<p>解答者が答えを入力するまで1分間お待ちください！</p>
-
-	<%
-	}
-	%>
-
-
-	<%-- 解答者に対する表示 --%>
-	<form method="POST" action="./sendAnswer">
+	<%-- 正解、不正解の表示 --%>
 		<%
-		if (playerIndex == answerPlayerIndex) {
+		if (answer.equals(subject)) {
 		%>
-		<p>ヒントから考えられるお題を記入し、決定してください！</p>
-		<p>（制限時間は1分です）</p>
-		<p>
-			お題：<input type="text" name="answer">
-		</p>
-		<p>
-			<input type="submit" value="答え決定">
-		</p>
+		<p>おめでとう！正解です！</p>
+		<%
+		}else {
+		%>
+		<p>残念！不正解です！</p>
 		<%
 		}
 		%>
+		
+		
+	<%-- 解答者の解答表示 --%>
+	<p><%=playerNames[answerPlayerIndex]%>さんの解答：<%=answer%></p>
+	
+	<%-- お題（答え）の表示 --%>
+	<p>お題は「<font color="red"><%=subject%></font>」でした！</p>
+	
+	
+	<%-- NextGameボタン表示 --%>
+	<form method="POST" action="./waitRoom">
+		<input type="submit" value="次のゲームへ">
 	</form>
+	<p>---------------------------------------------------</p>
 
 </body>
 </html>

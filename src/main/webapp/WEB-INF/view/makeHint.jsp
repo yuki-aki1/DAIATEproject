@@ -19,7 +19,6 @@ String[] playerNames = (String[]) request.getAttribute("playerNames");
 int playerIndex = (int) request.getAttribute("playerIndex");
 int answerPlayerIndex = (int) request.getAttribute("answerPlayerIndex");
 String subject = (String) request.getAttribute("subject");
-String startTime = (String) request.getAttribute("startTime");
 String playerNamesList = String.join(",", playerNames);
 -- --%>
 <!DOCTYPE html>
@@ -44,12 +43,6 @@ String playerNamesList = String.join(",", playerNames);
 		<jsp:param name="playerNamesList" value="<%=playerNamesList%>" />
 	</jsp:include>
 
-
-	<%-- 退室ボタン表示 --%>
-	<form method="POST" action="./home">
-		<input type="submit" value="退室">
-	</form>
-<p>---------------------------------------------------</p>
 
 	<%-- 時間表示  --%>
 	<jsp:include page="./include/includeTime.jsp" />

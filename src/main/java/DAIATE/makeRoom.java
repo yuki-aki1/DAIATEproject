@@ -33,7 +33,6 @@ public class makeRoom extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-<<<<<<< HEAD
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession(false);
@@ -69,9 +68,7 @@ public class makeRoom extends HttpServlet {
 		else  {
 			 request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
 		}
-=======
-		
->>>>>>> refs/heads/develop
+
 	}
 
 	/**
