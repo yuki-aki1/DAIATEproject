@@ -61,9 +61,6 @@ public class waitRoom extends HttpServlet {
 			request.setAttribute("roomId", roomId);
 			request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));
 			request.setAttribute("playerIndex", playerIndex);
-
-			System.out.println("waitRoomのdoGet");
-
 			
 			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);			
 		}

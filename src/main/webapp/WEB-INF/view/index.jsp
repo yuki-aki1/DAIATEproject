@@ -41,7 +41,7 @@ String[] errorTexts = (String[]) request.getAttribute("errorTexts");
 		%>
 
 		<p>
-			<input type="submit" value="ルームを作る">
+			<input type="submit" value="ルームに入る">
 		</p>
 	</form>
 
