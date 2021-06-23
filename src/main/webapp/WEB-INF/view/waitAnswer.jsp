@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
+<%--
 // テストデータ
 response.setIntHeader("Refresh", 63);
 String roomId = "0002";
@@ -12,10 +12,9 @@ String[] hints ={"バスケ","東京","4年","東京",""};
 
 String playerNamesList = String.join(",", playerNames);
 String hintsList = String.join(",", hints);
-%>
+--%>
 
-<%--
-response.setIntHeader("Refresh", 63); 
+<%
 String roomId = (String) request.getAttribute("roomId");
 String[] playerNames = (String[]) request.getAttribute("playerNames");
 int playerIndex = (int) request.getAttribute("playerIndex");
@@ -25,11 +24,11 @@ String[] hints = (String[]) request.getAttribute("hints");
 
 String playerNamesList = String.join(",", playerNames);
 String hintsList = String.join(",", hints);
---%>
+%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" http-equiv="refresh" content="5;URL=./waitAnswer">
 <title>Insert title here</title>
 </head>
 <body>
@@ -48,10 +47,6 @@ String hintsList = String.join(",", hints);
 		<jsp:param name="playerNamesList" value="<%=playerNamesList%>" />
 	</jsp:include>
 
-
-	<%-- 時間表示  --%>
-	<jsp:include page="./include/includeTime.jsp" />
-	<p>---------------------------------------------------</p>
 
 	<%-- ヒント表示  --%>
 	<jsp:include page="./include/includeHint.jsp">
@@ -73,24 +68,6 @@ String hintsList = String.join(",", hints);
 	}
 	%>
 
-
-	<%-- 解答者に対する表示 --%>
-	<form method="POST" action="./sendAnswer">
-		<%
-		if (playerIndex == answerPlayerIndex) {
-		%>
-		<p>ヒントから考えられるお題を記入し、決定してください！</p>
-		<p>（制限時間は1分です）</p>
-		<p>
-			お題：<input type="text" name="answer">
-		</p>
-		<p>
-			<input type="submit" value="答え決定">
-		</p>
-		<%
-		}
-		%>
-	</form>
 
 </body>
 </html>

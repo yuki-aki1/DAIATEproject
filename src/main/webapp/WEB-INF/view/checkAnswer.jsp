@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%
+<%--
 // テストデータ
-response.setIntHeader("Refresh", 63);
 String roomId = "0002";
 String[] playerNames = { "A", "B", "C", "D", "E" };
 int playerIndex = 2;
@@ -13,10 +12,9 @@ String answer = "オリンピック";
 
 String playerNamesList = String.join(",", playerNames);
 String hintsList = String.join(",", hints);
-%>
+--%>
 
-<%--
-response.setIntHeader("Refresh", 63); 
+<%
 String roomId = (String) request.getAttribute("roomId");
 String[] playerNames = (String[]) request.getAttribute("playerNames");
 int playerIndex = (int) request.getAttribute("playerIndex");
@@ -27,7 +25,7 @@ String answer = (String) request.getAttribute("answer");
 
 String playerNamesList = String.join(",", playerNames);
 String hintsList = String.join(",", hints);
---%>
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +50,7 @@ String hintsList = String.join(",", hints);
 
 
 	<%-- 退室ボタン表示 --%>
-	<form method="POST" action="./home">
+	<form method="POST" action="./leaveRoom">
 		<input type="submit" value="退室">
 	</form>
 	<p>---------------------------------------------------</p>
