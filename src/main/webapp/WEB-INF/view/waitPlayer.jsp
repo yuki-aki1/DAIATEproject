@@ -42,7 +42,7 @@ String playerNamesList = String.join(",", playerNames);
 	<br>
 	
 	<%-- 退室ボタン表示 --%>
-	<form method="POST" action="./home">
+	<form method="POST" action="./leaveRoom">
 		<input type="submit" value="退室">
 	</form>
 	<br>

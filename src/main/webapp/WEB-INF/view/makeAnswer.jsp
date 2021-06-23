@@ -8,23 +8,27 @@ String[] playerNames = { "A", "B", "C", "D", "E" };
 int playerIndex = 2;
 int answerPlayerIndex = 4;
 String subject = "オリンピック";
+String[] hints ={"バスケ","東京","4年","東京",""};
 
 String playerNamesList = String.join(",", playerNames);
+String hintsList = String.join(",", hints);
 --%>
 
 <%
-// response.setIntHeader("Refresh", 63); 
 String roomId = (String) request.getAttribute("roomId");
 String[] playerNames = (String[]) request.getAttribute("playerNames");
 int playerIndex = (int) request.getAttribute("playerIndex");
 int answerPlayerIndex = (int) request.getAttribute("answerPlayerIndex");
 String subject = (String) request.getAttribute("subject");
+String[] hints = (String[]) request.getAttribute("hints");
+
 String playerNamesList = String.join(",", playerNames);
+String hintsList = String.join(",", hints);
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" http-equiv="refresh" content="63;URL=./sendHint">
+<meta charset="UTF-8" http-equiv="refresh" content="63;URL=./sendAnswer">
 <title>Insert title here</title>
 </head>
 <body>
@@ -33,7 +37,7 @@ String playerNamesList = String.join(",", playerNames);
 	<jsp:include page="./include/includeRoomId.jsp">
 		<jsp:param name="roomId" value="<%=roomId%>" />
 	</jsp:include>
-<p>---------------------------------------------------</p>
+	<p>---------------------------------------------------</p>
 
 
 	<%--  プレイヤー一覧表示 --%>
@@ -46,40 +50,36 @@ String playerNamesList = String.join(",", playerNames);
 
 	<%-- 時間表示  --%>
 	<jsp:include page="./include/includeTime.jsp" />
-<p>---------------------------------------------------</p>
+	<p>---------------------------------------------------</p>
 
-	<%-- ヒント出す人に対する表示 --%>
-	<form method="POST" action="./sendHint">
+	<%-- ヒント表示  --%>
+	<jsp:include page="./include/includeHint.jsp">
+		<jsp:param name="playerIndex" value="<%=playerIndex%>" />
+		<jsp:param name="answerPlayerIndex" value="<%=answerPlayerIndex%>" />
+		<jsp:param name="playerNamesList" value="<%=playerNamesList%>" />
+		<jsp:param name="hintsList" value="<%=hintsList%>" />
+	</jsp:include>
+	<p>---------------------------------------------------</p>
+
+
+
+	<%-- 解答者に対する表示 --%>
+	<form method="POST" action="./sendAnswer">
 		<%
-		if (playerIndex != answerPlayerIndex) {
+		if (playerIndex == answerPlayerIndex) {
 		%>
-		<p>あなたはヒントを出すプレイヤーです！</p>
+		<p>ヒントから考えられるお題を記入し、決定してください！</p>
+		<p>（制限時間は1分です）</p>
 		<p>
-			お題：「<font color="red"><%=subject%></font>」
-		</p>
-		<p>1分以内にヒントを入力してください！</p>
-		<p>
-			ヒント：<input type="text" name="hint">
+			お題：<input type="text" name="answer">
 		</p>
 		<p>
-			<input type="submit" value="ヒント決定">
+			<input type="submit" value="答え決定">
 		</p>
 		<%
 		}
 		%>
 	</form>
-
-	<%-- 解答者に対する表示 --%>
-	<%
-	if (playerIndex == answerPlayerIndex) {
-	%>
-	<p>あなたは解答者です！</p>
-	<p>ヒントが入力されるまで1分間お待ちください！</p>
-
-	<%
-	}
-	%>
-
 
 </body>
 </html>
