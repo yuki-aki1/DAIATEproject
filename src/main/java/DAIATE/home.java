@@ -29,8 +29,9 @@ public class home extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
 		request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
-		// request.getRequestDispatcher("/WEB-INF/view/makeHint.jsp").forward(request, response); // テスト用
+//		 request.getRequestDispatcher("/WEB-INF/view/checkAnswer.jsp").forward(request, response); // テスト用
 	}
 
 	/**

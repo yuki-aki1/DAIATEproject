@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%--
-テストデータ
+<%
+// テストデータ
 response.setIntHeader("Refresh", 63);
 String roomId = "0002";
 String[] playerNames = { "A", "B", "C", "D", "E" };
@@ -10,18 +10,17 @@ int answerPlayerIndex = 4;
 String subject = "オリンピック";
 
 String playerNamesList = String.join(",", playerNames);
---%>
+%>
 
-<%
+<%--
 response.setIntHeader("Refresh", 63); 
 String roomId = (String) request.getAttribute("roomId");
 String[] playerNames = (String[]) request.getAttribute("playerNames");
 int playerIndex = (int) request.getAttribute("playerIndex");
 int answerPlayerIndex = (int) request.getAttribute("answerPlayerIndex");
 String subject = (String) request.getAttribute("subject");
-String startTime = (String) request.getAttribute("startTime");
 String playerNamesList = String.join(",", playerNames);
- %>
+-- --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,12 +43,6 @@ String playerNamesList = String.join(",", playerNames);
 		<jsp:param name="playerNamesList" value="<%=playerNamesList%>" />
 	</jsp:include>
 
-
-	<%-- 退室ボタン表示 --%>
-	<form method="POST" action="./home">
-		<input type="submit" value="退室">
-	</form>
-<p>---------------------------------------------------</p>
 
 	<%-- 時間表示  --%>
 	<jsp:include page="./include/includeTime.jsp" />
