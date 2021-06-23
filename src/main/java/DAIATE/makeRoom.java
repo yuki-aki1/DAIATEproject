@@ -63,10 +63,6 @@ public class makeRoom extends HttpServlet {
 		request.setAttribute("playerNames", playerNames);
 		request.setAttribute("playerIndex", playerIndex);
 	
-//		waitRoom wr = new waitRoom();
-//		wr.doGet(request, response);
-		
-//		request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
 		request.getRequestDispatcher("/waitRoom").forward(request, response);
 
 	}

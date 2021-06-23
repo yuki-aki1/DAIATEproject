@@ -7,6 +7,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import dbAccess.Player;
+import dbAccess.Room;
 
 /**
  * Servlet implementation class enterRoom
@@ -28,26 +32,26 @@ public class enterRoom extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-
-		String name = request.getParameter("name"); // プレイヤー名の入力を取得
-		String roomId = request.getParameter("roomId"); // roomIｄの入力を取得
-		int numOfUser = 2;
-		name ="aaaaa";
-		roomId="000000";
-		
-
-		request.setAttribute("name", name);
-		request.setAttribute("roomId", roomId);
-		request.setAttribute("numOfUser", numOfUser);
-
-		boolean hasTheGameStarted = false; // ゲームが始まっているか(とりあえず、常に始まっていない状態にしている)
-
-		if (hasTheGameStarted) {
-			request.getRequestDispatcher("/WEB-INF/view/makeHint.jsp").forward(request, response);
-		} else {
-			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response); //ゲームが始まっていない場合
-		}
+//		request.setCharacterEncoding("UTF-8");
+//
+//		String name = request.getParameter("name"); // プレイヤー名の入力を取得
+//		String roomId = request.getParameter("roomId"); // roomIｄの入力を取得
+//		int numOfUser = 2;
+//		name ="aaaaa";
+//		roomId="000000";
+//		
+//
+//		request.setAttribute("name", name);
+//		request.setAttribute("roomId", roomId);
+//		request.setAttribute("numOfUser", numOfUser);
+//
+//		boolean hasTheGameStarted = false; // ゲームが始まっているか(とりあえず、常に始まっていない状態にしている)
+//
+//		if (hasTheGameStarted) {
+//			request.getRequestDispatcher("/WEB-INF/view/makeHint.jsp").forward(request, response);
+//		} else {
+//			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response); //ゲームが始まっていない場合
+//		}
 	}
 
 	/**
@@ -56,37 +60,63 @@ public class enterRoom extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+//		request.setCharacterEncoding("UTF-8");
+
+//		
+//		
+//		String name = request.getParameter("name"); // プレイヤー名の入力を取得
+//		String roomId = request.getParameter("roomId"); // roomIｄの入力を取得
+//		int numOfUser = 2; // とりあえず「1」
+//
+//		request.setAttribute("name", name);
+//		request.setAttribute("roomId", roomId);
+//		request.setAttribute("numOfUser", numOfUser);
+//		
+//		String[] errorText = {"エラー１","エラー２"};
+//		request.setAttribute("errorText", errorText);
+//
+//		// プレイヤー名：aa、ルームID：00が入力されたときのみ「waitPlayer.jsp」へ
+//		if (name.equals("aa") == true && roomId.equals("00") == true) {
+//			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
+//
+//		} else if (name.equals("aa") == false && roomId.equals("00") == true) {
+//			request.setAttribute("nameError", "err発生");
+//			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+//
+//		} else if (name.equals("aa") == true && roomId.equals("00") == false) {
+//			request.setAttribute("roomIdError", "err発生");
+//			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+//
+//		} else {
+//			request.setAttribute("nameError", "err発生");
+//			request.setAttribute("roomIdError", "err発生");
+//			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+//
+//		}
+		
 		request.setCharacterEncoding("UTF-8");
 
-		String name = request.getParameter("name"); // プレイヤー名の入力を取得
-		String roomId = request.getParameter("roomId"); // roomIｄの入力を取得
-		int numOfUser = 2; // とりあえず「1」
-
-		request.setAttribute("name", name);
-		request.setAttribute("roomId", roomId);
-		request.setAttribute("numOfUser", numOfUser);
+		String playerName = request.getParameter("name");
+		String roomId = request.getParameter("roomId");
+		HttpSession session = request.getSession(true);
+		String sessionId = session.getId();
 		
-		String[] errorText = {"エラー１","エラー２"};
-		request.setAttribute("errorText", errorText);
+		session.setAttribute("roomId", roomId);
+		session.setAttribute("hostPlayerName", playerName);
+		session.setAttribute("playerName", playerName);
+		
+		
+		new Player(playerName, roomId, sessionId);
+		int playerIndex = 0;
+		
+		String[] playerNames = {playerName};
 
-		// プレイヤー名：aa、ルームID：00が入力されたときのみ「waitPlayer.jsp」へ
-		if (name.equals("aa") == true && roomId.equals("00") == true) {
-			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
+		request.setAttribute("roomId", roomId);
+		request.setAttribute("playerNames", playerNames);
+		request.setAttribute("playerIndex", playerIndex);
+	
+		request.getRequestDispatcher("/waitRoom").forward(request, response);
 
-		} else if (name.equals("aa") == false && roomId.equals("00") == true) {
-			request.setAttribute("nameError", "err発生");
-			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
-
-		} else if (name.equals("aa") == true && roomId.equals("00") == false) {
-			request.setAttribute("roomIdError", "err発生");
-			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
-
-		} else {
-			request.setAttribute("nameError", "err発生");
-			request.setAttribute("roomIdError", "err発生");
-			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
-
-		}
 
 	}
 
