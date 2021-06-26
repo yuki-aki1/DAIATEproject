@@ -1,6 +1,8 @@
 package DAIATE;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,26 +34,7 @@ public class enterRoom extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		request.setCharacterEncoding("UTF-8");
-//
-//		String name = request.getParameter("name"); // プレイヤー名の入力を取得
-//		String roomId = request.getParameter("roomId"); // roomIｄの入力を取得
-//		int numOfUser = 2;
-//		name ="aaaaa";
-//		roomId="000000";
-//		
-//
-//		request.setAttribute("name", name);
-//		request.setAttribute("roomId", roomId);
-//		request.setAttribute("numOfUser", numOfUser);
-//
-//		boolean hasTheGameStarted = false; // ゲームが始まっているか(とりあえず、常に始まっていない状態にしている)
-//
-//		if (hasTheGameStarted) {
-//			request.getRequestDispatcher("/WEB-INF/view/makeHint.jsp").forward(request, response);
-//		} else {
-//			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response); //ゲームが始まっていない場合
-//		}
+		doPost(request, response);
 	}
 
 	/**
@@ -98,22 +81,36 @@ public class enterRoom extends HttpServlet {
 
 		String playerName = request.getParameter("name");
 		String roomId = request.getParameter("roomId");
+		
+		// もし名前やルームIDがnullならindex.jspに戻る
+		if (playerName == null || roomId == null) {
+			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);			
+			return;
+		}
+		
 		HttpSession session = request.getSession(true);
 		String sessionId = session.getId();
+		List<String> errorTexts = new ArrayList<>();
+		if (!Room.idExist(roomId)) {
+			errorTexts.add("ルームID「" + roomId + "」は存在しません。");
+		} else if (Player.existsPlayerName(roomId, playerName)) {
+			errorTexts.add("ルームID「" + roomId + "」でプレイヤー名「" + playerName + "」はすでに使われています。");
+		}
+		
+		
+		if (errorTexts.size() != 0) {
+			request.setAttribute("errorTexts", errorTexts.toArray(new String[errorTexts.size()]));
+			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+			return;
+		}
+
+		String hostPlayerName = Room.getHostName(roomId);
 		
 		session.setAttribute("roomId", roomId);
-		session.setAttribute("hostPlayerName", playerName);
+		session.setAttribute("hostPlayerName", hostPlayerName);
 		session.setAttribute("playerName", playerName);
 		
-		
 		new Player(playerName, roomId, sessionId);
-		int playerIndex = 0;
-		
-		String[] playerNames = {playerName};
-
-		request.setAttribute("roomId", roomId);
-		request.setAttribute("playerNames", playerNames);
-		request.setAttribute("playerIndex", playerIndex);
 	
 		request.getRequestDispatcher("/waitRoom").forward(request, response);
 

@@ -3,11 +3,13 @@ package dbAccess;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Room {
 
 	public static Connection conn;
+	public static PreparedStatement pstmt;
 	private String roomId;
 	private String hostPlayerName;
 	private int roomState;
@@ -26,21 +28,137 @@ public class Room {
 	
 	public Room(String roomId, String hostPlayerName) {
 		this(roomId, hostPlayerName, 0, null, -1, null);
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD);
+		
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD)) {
+			System.out.println("Connected....");
+			String sqlStr = "insert into rooms (room_id, host_player_name, room_state) values (?, ?, ?)";			
+			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
 
-			String sql = "insert into rooms (room_id, host_player_name) values (?, ?)";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+				ps.setString(1, roomId);
+				ps.setString(2, hostPlayerName);
+				ps.setInt(3, 0);
+				System.out.println("here1");
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			System.out.println("Connection Failed. : " + e.toString());
+			throw new RuntimeException(e);
+		}
+//		
+//		try {
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//			conn = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD);
+//
+//			String sql = "insert into rooms (room_id, host_player_name, room_state) values (?, ?, ?)";
+//			pstmt = conn.prepareStatement(sql);
+//
+//			pstmt.setString(1, roomId);
+//			pstmt.setString(2, hostPlayerName);
+//			pstmt.setInt(3, 0);
+//
+//			
+////			int num = pstmt.executeUpdate();
+//			pstmt.executeUpdate();
+//			
+//						
+//		} catch (SQLException e) {
+//			System.out.println("SQLException:" + e.getMessage());
+//		} catch (Exception e) {
+//			System.out.println("Exception:" + e.getMessage());
+//		} finally {
+//			try {
+//				if (conn != null) {
+//					conn.close();
+//				}
+//			} catch (SQLException e) {
+//				System.out.println("SQLException:" + e.getMessage());
+//			}
+//		}
+	}
+	
+	
+	public static void deleteRoom(String roomId) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			conn = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD);			
+			
+			String sql = "delete from rooms where room_id = ?";
+			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, roomId);
-			pstmt.setString(2, hostPlayerName);
-
-//			int num = pstmt.executeUpdate();
+			
 			pstmt.executeUpdate();
 			
-			pstmt.close();
+		} catch (SQLException e) {
+			System.out.println("SQLException:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("Exception:" + e.getMessage());
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException:" + e.getMessage());
+			}
+		}
+	}
+	
+	
+	public static boolean idExist(String roomId) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD);
+
+			String sql = "select count(*) from rooms where room_id = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, roomId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			rs.next();
+			int count = rs.getInt(1);
+
+			
+			if (count == 0) {
+				return false;
+			} 
 						
+		} catch (SQLException e) {
+			System.out.println("SQLException:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("Exception:" + e.getMessage());
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException:" + e.getMessage());
+			}
+		}
+		return true;
+	}
+	
+	public static String getHostName(String roomId) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD);
+
+			String sql = "select host_player_name from rooms where room_id = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, roomId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			rs.next();
+			String hostPlayerName = rs.getString("host_player_name");
+			
+			return hostPlayerName;
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("ClassNotFoundException:" + e.getMessage());
 		} catch (SQLException e) {
@@ -56,5 +174,6 @@ public class Room {
 				System.out.println("SQLException:" + e.getMessage());
 			}
 		}
+		return "";
 	}
 }

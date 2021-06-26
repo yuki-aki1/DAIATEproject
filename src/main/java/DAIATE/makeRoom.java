@@ -33,42 +33,8 @@ public class makeRoom extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
-		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			String roomId = (String) session.getAttribute("roomId");
-			String playerName = (String) session.getAttribute("playerName");
-			String hostPlayerName = (String) session.getAttribute("hostPlayerName");
-			
-			Player[] players = Player.getPlayersWithRoomId(roomId);
-			
-			List<String> playerNames = new ArrayList<>();
-			
-			int playerIndex = 0;
-			for (int i = 0; i < players.length; i++) {
-				String name = players[i].getPlayerName();
-				System.out.println(name);
-				if (name.equals(hostPlayerName)) {
-					playerNames.add(0, name);					
-				} else {
-					playerNames.add(name);					
-				}
-				if (name.equals(playerName)) {
-					playerIndex = i;
-				}
-			}
-			
-			request.setAttribute("roomId", roomId);
-			request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));
-			request.setAttribute("playerIndex", playerIndex);
-
-			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);			
-		}
-		else  {
-			 request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
-		}
-
+		System.out.println("here1");
+		doPost(request, response);
 	}
 
 	/**
@@ -80,7 +46,13 @@ public class makeRoom extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		String playerName = request.getParameter("name");
-		String roomId = utility.RandomGenerate.getRandomString(6);
+		String roomId = "";
+		
+
+		do {
+			roomId = utility.RandomGenerate.getRandomString(6);	
+		} while(Room.idExist(roomId));
+			
 		HttpSession session = request.getSession(true);
 		String sessionId = session.getId();
 		
@@ -90,13 +62,6 @@ public class makeRoom extends HttpServlet {
 		
 		new Room(roomId, playerName);
 		new Player(playerName, roomId, sessionId);
-		int playerIndex = 0;
-		
-		String[] playerNames = {playerName};
-
-		request.setAttribute("roomId", roomId);
-		request.setAttribute("playerNames", playerNames);
-		request.setAttribute("playerIndex", playerIndex);
 	
 		request.getRequestDispatcher("/waitRoom").forward(request, response);
 
