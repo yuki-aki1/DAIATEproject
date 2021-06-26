@@ -21,29 +21,30 @@ import dbAccess.Subject;
 @WebServlet("/waitRoom")
 public class waitRoom extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public waitRoom() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public waitRoom() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession(false);
-		
+
 		if (session == null) {
-			 request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);			
-			return ;
+			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+			return;
 		}
-		
+
 		String roomId = (String) session.getAttribute("roomId");
 		String playerName = (String) session.getAttribute("playerName");
 		String hostPlayerName = (String) session.getAttribute("hostPlayerName");
@@ -52,37 +53,11 @@ public class waitRoom extends HttpServlet {
 
 		Room room = Room.getRoom(roomId);
 		int roomState = room.getRoomState();
-		String answerPlayerNmae = room.getAnswerPlayerName();
-		
-		if(roomState==0) {
-		
-		List<String> playerNames = new ArrayList<>();
-		int playerIndex = 0;
-		for (int i = 0; i < players.length; i++) {
-			String name = players[i].getPlayerName();
-			if (name.equals(hostPlayerName)) {
-				playerNames.add(0, name);
-			} else {
-				playerNames.add(name);
-			}
-			if (name.equals(playerName)) {
-				playerIndex = i;
-			}
-		}
 
-		request.setAttribute("roomId", roomId);
-		request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));
-		request.setAttribute("playerIndex", playerIndex);
+		if (roomState == 0) {
 
-		request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
-		}
-		
-		if(roomState == 1) {
-
-			
 			List<String> playerNames = new ArrayList<>();
 			int playerIndex = 0;
-			int answerPlayerIndex = 0;
 			for (int i = 0; i < players.length; i++) {
 				String name = players[i].getPlayerName();
 				if (name.equals(hostPlayerName)) {
@@ -93,28 +68,55 @@ public class waitRoom extends HttpServlet {
 				if (name.equals(playerName)) {
 					playerIndex = i;
 				}
-				if(name.equals(answerPlayerNmae)) {
+			}
+
+			request.setAttribute("roomId", roomId);
+			request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));
+			request.setAttribute("playerIndex", playerIndex);
+
+			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
+		}
+
+		if (roomState == 1) {
+
+			List<String> playerNames = new ArrayList<>();
+			int playerIndex = 0;
+			int answerPlayerIndex = 0;
+			String answerPlayerName = room.getAnswerPlayerName();
+			for (int i = 0; i < players.length; i++) {
+				String name = players[i].getPlayerName();
+				if (name.equals(hostPlayerName)) {
+					playerNames.add(0, name);
+				} else {
+					playerNames.add(name);
+				}
+				if (name.equals(playerName)) {
+					playerIndex = i;
+				}
+				if (name.equals(answerPlayerName)) {
 					answerPlayerIndex = i;
 				}
 			}
-			
-			Subject subject = Subject.getSubject(Integer.parseInt(roomId));
-			
+
+			Subject subject = Subject.getSubject(room.getSubjectId());
+
+
 			request.setAttribute("roomId", roomId);
-			request.setAttribute("playerNames", playerNames);
+			request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));
 			request.setAttribute("playerIndex", playerIndex);
 			request.setAttribute("answerPlayerIndex", answerPlayerIndex);
 			request.setAttribute("subject", subject.getSubjectName());
 
 			request.getRequestDispatcher("/WEB-INF/view/makeHint.jsp").forward(request, response);
-			
+
 		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

@@ -53,7 +53,7 @@ public class Room {
 		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
 				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
-			String sqlStr = "select * from rooms where roomId = ?";
+			String sqlStr = "select * from rooms where room_id = ?";
 			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
 
 				ps.setString(1, roomId);
@@ -61,7 +61,7 @@ public class Room {
 				try (ResultSet result = ps.executeQuery()) {
 					if (result.next()) {
 						room = new Room(roomId, result.getString("host_player_name"), result.getInt("room_state"),
-								result.getString("anwer_player_name"), result.getInt("subject_id"),
+								result.getString("answer_player_name"), result.getInt("subject_id"),
 								result.getString("answer"));
 					}
 				}
@@ -77,7 +77,7 @@ public class Room {
 		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
 				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
-			String sqlStr = "update rooms set roomState = ? where roomId = ?";
+			String sqlStr = "update rooms set room_state = ? where room_id = ?";
 			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
 
 				ps.setInt(1, roomState);
@@ -94,7 +94,7 @@ public class Room {
 		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
 				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
-			String sqlStr = "update rooms set answer_player_name = ? where roomId = ?";
+			String sqlStr = "update rooms set answer_player_name = ? where room_id = ?";
 			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
 
 				ps.setString(1, answerPlayerName);
@@ -111,7 +111,7 @@ public class Room {
 		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
 				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
-			String sqlStr = "update rooms set subjectId = ? where roomId = ?";
+			String sqlStr = "update rooms set subject_id = ? where room_id = ?";
 			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
 
 				ps.setInt(1, subjectId);
