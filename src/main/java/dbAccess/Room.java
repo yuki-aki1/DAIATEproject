@@ -250,4 +250,8 @@ public class Room {
 	public int getSubjectId() {
 		return this.subjectId;
 	}
+	
+	public String getAnswer() {
+		return this.answer;
+	}
 }
