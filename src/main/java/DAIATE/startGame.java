@@ -57,8 +57,6 @@ public class startGame extends HttpServlet {
 		String roomId = (String) session.getAttribute("roomId");
 		String playerName = (String) session.getAttribute("playerName");
 
-		Room.updateRoomState(roomId, roomState);
-
 		Player[] players = Player.getPlayersWithRoomId(roomId);
 
 		int answerPlayerIndex = RandomGenerate.getRandomIndex(players.length);
@@ -80,6 +78,8 @@ public class startGame extends HttpServlet {
 		Subject subject = Subject.getSubject();
 		Room.updateSubjectId(roomId,subject.getSubjectId());
 
+		Room.updateRoomState(roomId, roomState);
+		
 		request.setAttribute("roomId", roomId);
 		request.setAttribute("playerNames", playerNames);
 		request.setAttribute("playerIndex", playerIndex);
