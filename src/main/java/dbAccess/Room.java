@@ -16,8 +16,9 @@ public class Room {
 	private String answerPlayerName;
 	private int subjectId;
 	private String answer;
-	
-	public Room(String roomId, String hostPlayerName, int roomState, String answerPlayerName, int subjectId, String answer) {
+
+	public Room(String roomId, String hostPlayerName, int roomState, String answerPlayerName, int subjectId,
+			String answer) {
 		this.roomId = roomId;
 		this.hostPlayerName = hostPlayerName;
 		this.roomState = roomState;
@@ -25,13 +26,14 @@ public class Room {
 		this.subjectId = subjectId;
 		this.answer = answer;
 	}
-	
+
 	public Room(String roomId, String hostPlayerName) {
 		this(roomId, hostPlayerName, 0, null, -1, null);
-		
-		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD)) {
+
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
+				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
-			String sqlStr = "insert into rooms (room_id, host_player_name, room_state) values (?, ?, ?)";			
+			String sqlStr = "insert into rooms (room_id, host_player_name, room_state) values (?, ?, ?)";
 			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
 
 				ps.setString(1, roomId);
@@ -45,9 +47,35 @@ public class Room {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
+	public static Room getRoom(String roomId) {
+		Room room = null;
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
+				DatabaseInfo.PASSWORD)) {
+			System.out.println("Connected....");
+			String sqlStr = "select * from rooms where roomId = ?";
+			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
+
+				ps.setString(1, roomId);
+
+				try (ResultSet result = ps.executeQuery()) {
+					if (result.next()) {
+						room = new Room(roomId, result.getString("host_player_name"), result.getInt("room_state"),
+								result.getString("anwer_player_name"), result.getInt("subject_id"),
+								result.getString("answer"));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Connection Failed. : " + e.toString());
+			throw new RuntimeException(e);
+		}
+		return room;
+	}
+
 	public static void updateRoomState(String roomId, int roomState) {
-		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD)) {
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
+				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
 			String sqlStr = "update rooms set roomState = ? where roomId = ?";
 			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
@@ -61,9 +89,10 @@ public class Room {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static void updateAnswerPlayerName(String roomId, String answerPlayerName) {
-		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD)) {
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
+				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
 			String sqlStr = "update rooms set answer_player_name = ? where roomId = ?";
 			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
@@ -76,23 +105,38 @@ public class Room {
 			System.out.println("Connection Failed. : " + e.toString());
 			throw new RuntimeException(e);
 		}
-		
 	}
 	
+	public static void updateSubjectId(String roomId, String subjectId) {
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
+				DatabaseInfo.PASSWORD)) {
+			System.out.println("Connected....");
+			String sqlStr = "update rooms set subjectId = ? where roomId = ?";
+			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
+
+				ps.setString(1, subjectId);
+				ps.setString(2, roomId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			System.out.println("Connection Failed. : " + e.toString());
+			throw new RuntimeException(e);
+		}		
+	}
 	
 	public static void deleteRoom(String roomId) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			conn = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD);			
-			
+			conn = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD);
+
 			String sql = "delete from rooms where room_id = ?";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, roomId);
-			
+
 			pstmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			System.out.println("SQLException:" + e.getMessage());
 		} catch (Exception e) {
@@ -107,7 +151,6 @@ public class Room {
 			}
 		}
 	}
-	
 	
 	public static boolean idExist(String roomId) {
 		try {
@@ -124,11 +167,10 @@ public class Room {
 			rs.next();
 			int count = rs.getInt(1);
 
-			
 			if (count == 0) {
 				return false;
-			} 
-						
+			}
+
 		} catch (SQLException e) {
 			System.out.println("SQLException:" + e.getMessage());
 		} catch (Exception e) {
@@ -159,9 +201,9 @@ public class Room {
 
 			rs.next();
 			String hostPlayerName = rs.getString("host_player_name");
-			
+
 			return hostPlayerName;
-			
+
 		} catch (ClassNotFoundException e) {
 			System.out.println("ClassNotFoundException:" + e.getMessage());
 		} catch (SQLException e) {
@@ -178,5 +220,9 @@ public class Room {
 			}
 		}
 		return "";
+	}
+	
+	public int getRoomState() {
+		return this.roomState;
 	}
 }
