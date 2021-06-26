@@ -1,15 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%--
-
-String roomId = "0002";
-String[] playerNames = { "A" ,"B","C","D","E"};
-int playerIndex = 2;
-
-String playerNamesList = String.join(",", playerNames);
---%>
-
 <%
 // response.setIntHeader("Refresh", 5);
 response.setHeader("URL", "");
