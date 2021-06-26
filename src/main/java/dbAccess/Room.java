@@ -225,4 +225,12 @@ public class Room {
 	public int getRoomState() {
 		return this.roomState;
 	}
+	
+	public String getAnswerPlayerName() {
+		return this.answerPlayerName;
+	}
+	
+	public int getSubjectId() {
+		return this.subjectId;
+	}
 }
