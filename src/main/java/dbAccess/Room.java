@@ -44,36 +44,39 @@ public class Room {
 			System.out.println("Connection Failed. : " + e.toString());
 			throw new RuntimeException(e);
 		}
-//		
-//		try {
-//			Class.forName("com.mysql.cj.jdbc.Driver");
-//			conn = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD);
-//
-//			String sql = "insert into rooms (room_id, host_player_name, room_state) values (?, ?, ?)";
-//			pstmt = conn.prepareStatement(sql);
-//
-//			pstmt.setString(1, roomId);
-//			pstmt.setString(2, hostPlayerName);
-//			pstmt.setInt(3, 0);
-//
-//			
-////			int num = pstmt.executeUpdate();
-//			pstmt.executeUpdate();
-//			
-//						
-//		} catch (SQLException e) {
-//			System.out.println("SQLException:" + e.getMessage());
-//		} catch (Exception e) {
-//			System.out.println("Exception:" + e.getMessage());
-//		} finally {
-//			try {
-//				if (conn != null) {
-//					conn.close();
-//				}
-//			} catch (SQLException e) {
-//				System.out.println("SQLException:" + e.getMessage());
-//			}
-//		}
+	}
+	
+	public static void updateRoomState(String roomId, int roomState) {
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD)) {
+			System.out.println("Connected....");
+			String sqlStr = "update rooms set roomState = ? where roomId = ?";
+			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
+
+				ps.setInt(1, roomState);
+				ps.setString(2, roomId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			System.out.println("Connection Failed. : " + e.toString());
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static void updateAnswerPlayerName(String roomId, String answerPlayerName) {
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER, DatabaseInfo.PASSWORD)) {
+			System.out.println("Connected....");
+			String sqlStr = "update rooms set answer_player_name = ? where roomId = ?";
+			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
+
+				ps.setString(1, answerPlayerName);
+				ps.setString(2, roomId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			System.out.println("Connection Failed. : " + e.toString());
+			throw new RuntimeException(e);
+		}
+		
 	}
 	
 	
