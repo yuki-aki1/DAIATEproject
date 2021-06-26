@@ -124,6 +124,23 @@ public class Room {
 		}		
 	}
 	
+	public static void updataAnswer(String roomId, String answer) {
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
+				DatabaseInfo.PASSWORD)) {
+			System.out.println("Connected....");
+			String sqlStr = "update rooms set answer = ? where room_id = ?";
+			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
+
+				ps.setString(1, answer);
+				ps.setString(2, roomId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			System.out.println("Connection Failed. : " + e.toString());
+			throw new RuntimeException(e);
+		}				
+	}
+	
 	public static void deleteRoom(String roomId) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
