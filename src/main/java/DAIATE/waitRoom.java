@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dbAccess.Player;
+import dbAccess.Room;
+import dbAccess.Subject;
 
 /**
  * Servlet implementation class waitRoom
@@ -48,6 +50,12 @@ public class waitRoom extends HttpServlet {
 
 		Player[] players = Player.getPlayersWithRoomId(roomId);
 
+		Room room = Room.getRoom(roomId);
+		int roomState = room.getRoomState();
+		String answerPlayerNmae = room.getAnswerPlayerName();
+		
+		if(roomState==0) {
+		
 		List<String> playerNames = new ArrayList<>();
 		int playerIndex = 0;
 		for (int i = 0; i < players.length; i++) {
@@ -67,6 +75,42 @@ public class waitRoom extends HttpServlet {
 		request.setAttribute("playerIndex", playerIndex);
 
 		request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
+		}
+		
+		if(roomState == 1) {
+
+			
+			List<String> playerNames = new ArrayList<>();
+			int playerIndex = 0;
+			int answerPlayerIndex = 0;
+			for (int i = 0; i < players.length; i++) {
+				String name = players[i].getPlayerName();
+				if (name.equals(hostPlayerName)) {
+					playerNames.add(0, name);
+				} else {
+					playerNames.add(name);
+				}
+				if (name.equals(playerName)) {
+					playerIndex = i;
+				}
+				if(name.equals(answerPlayerNmae)) {
+					answerPlayerIndex = i;
+				}
+			}
+			
+			
+			
+			Subject subject = Subject.getSubject(Integer.parseInt(roomId));
+			
+			request.setAttribute("roomId", roomId);
+			request.setAttribute("playerNames", playerNames);
+			request.setAttribute("playerIndex", playerIndex);
+			request.setAttribute("answerPlayerIndex", answerPlayerIndex);
+			request.setAttribute("subject", subject.getSubjectName());
+
+			request.getRequestDispatcher("/WEB-INF/view/makeHint.jsp").forward(request, response);
+			
+		}
 	}
 
 	/**

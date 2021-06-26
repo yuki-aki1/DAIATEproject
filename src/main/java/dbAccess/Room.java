@@ -107,14 +107,14 @@ public class Room {
 		}
 	}
 	
-	public static void updateSubjectId(String roomId, String subjectId) {
+	public static void updateSubjectId(String roomId, int subjectId) {
 		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
 				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
 			String sqlStr = "update rooms set subjectId = ? where roomId = ?";
 			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
 
-				ps.setString(1, subjectId);
+				ps.setInt(1, subjectId);
 				ps.setString(2, roomId);
 				ps.executeUpdate();
 			}
