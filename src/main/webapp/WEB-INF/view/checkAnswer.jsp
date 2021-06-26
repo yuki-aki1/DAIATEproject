@@ -48,7 +48,6 @@ String hintsList = String.join(",", hints);
 		<jsp:param name="answerPlayerIndex" value="<%=answerPlayerIndex%>" />
 		<jsp:param name="playerNamesList" value="<%=playerNamesList%>" />
 		<jsp:param name="hintsList" value="<%=hintsList%>" />
-		<jsp:param name="answer" value="<%=answer%>" />
 	</jsp:include>
 	<p>---------------------------------------------------</p>
 
