@@ -65,7 +65,6 @@ public class sendAnswer extends HttpServlet {
 
 		Room room = Room.getRoom(roomId);
 		room.updateAnswer(roomId, answer);
-		room.updateRoomState(roomId, 3);
 
 		Player[] players = Player.getPlayersWithRoomId(roomId);
 
@@ -93,6 +92,7 @@ public class sendAnswer extends HttpServlet {
 		}
 
 		Subject subject = Subject.getSubject(room.getSubjectId());
+		room.updateRoomState(roomId, 3);
 
 		request.setAttribute("roomId", roomId);
 		request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));

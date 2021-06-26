@@ -1,19 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%--
-// テストデータ
-response.setIntHeader("Refresh", 63);
-String roomId = "0002";
-String[] playerNames = { "A", "B", "C", "D", "E" };
-int playerIndex = 2;
-int answerPlayerIndex = 4;
-String subject = "オリンピック";
-String[] hints ={"バスケ","東京","4年","東京",""};
-
-String playerNamesList = String.join(",", playerNames);
-String hintsList = String.join(",", hints);
---%>
-
 <%
 String roomId = (String) request.getAttribute("roomId");
 String[] playerNames = (String[]) request.getAttribute("playerNames");

@@ -124,7 +124,7 @@ public class Room {
 		}		
 	}
 	
-	public static void updataAnswer(String roomId, String answer) {
+	public static void updateAnswer(String roomId, String answer) {
 		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
 				DatabaseInfo.PASSWORD)) {
 			System.out.println("Connected....");
