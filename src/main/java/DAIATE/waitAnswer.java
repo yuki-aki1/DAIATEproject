@@ -70,6 +70,11 @@ public class waitAnswer extends HttpServlet {
 			}
 		}
 		
+		List<String> hints = new ArrayList<>();
+		for (int i = 0; i < players.length; i++) {
+			hints.add(players[i].getHint());
+		}
+		
 		Subject subject = Subject.getSubject(room.getSubjectId());
 		
 		request.setAttribute("roomId", roomId);
@@ -77,11 +82,6 @@ public class waitAnswer extends HttpServlet {
 		request.setAttribute("playerIndex", playerIndex);
 		request.setAttribute("answerPlayerIndex", answerPlayerIndex);
 		request.setAttribute("subject", subject.getSubjectName());
-
-		List<String> hints = new ArrayList<>();
-		for (int i = 0; i < players.length; i++) {
-			hints.add(players[i].getHint());
-		}
 		request.setAttribute("hints", hints.toArray(new String[hints.size()]));
 
 		
@@ -91,7 +91,10 @@ public class waitAnswer extends HttpServlet {
 		} 
 		
 		if (roomState == 3) {
-			
+			String answer = room.getAnswer();
+			request.setAttribute("answer", answer);
+			request.getRequestDispatcher("/WEB-INF/view/checkAnswer.jsp").forward(request, response);
+			return ;
 		}
 	
 	}
