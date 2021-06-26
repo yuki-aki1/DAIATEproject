@@ -6,6 +6,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import dbAccess.Player;
+import dbAccess.Room;
 
 /**
  * Servlet implementation class leaveRoom
@@ -19,23 +23,40 @@ public class leaveRoom extends HttpServlet {
      */
     public leaveRoom() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		HttpSession session = request.getSession(false);
+		
+		if (session == null) {
+			 request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);			
+			return ;
+		}
+		
+		String sessionId = (String) session.getId();
+		String roomId = (String) session.getAttribute("roomId");
+		String playerName = (String) session.getAttribute("playerName");
+		String hostPlayerName = (String) session.getAttribute("hostPlayerName");
+		
+		Player.deletePlayer(sessionId);
+
+		if (playerName.equals(hostPlayerName)) {
+			Room.deleteRoom(roomId);
+		}
+		
+		request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+		
 	}
 
 }

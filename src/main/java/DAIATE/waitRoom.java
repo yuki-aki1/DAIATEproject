@@ -36,37 +36,37 @@ public class waitRoom extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
-			String roomId = (String) session.getAttribute("roomId");
-			String playerName = (String) session.getAttribute("playerName");
-			String hostPlayerName = (String) session.getAttribute("hostPlayerName");
-			
-			Player[] players = Player.getPlayersWithRoomId(roomId);
-			
-			List<String> playerNames = new ArrayList<>();
-			
-			int playerIndex = 0;
-			for (int i = 0; i < players.length; i++) {
-				String name = players[i].getPlayerName();
-				if (name.equals(hostPlayerName)) {
-					playerNames.add(0, name);					
-				} else {
-					playerNames.add(name);					
-				}
-				if (name.equals(playerName)) {
-					playerIndex = i;
-				}
+		
+		if (session == null) {
+			 request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);			
+			return ;
+		}
+		
+		String roomId = (String) session.getAttribute("roomId");
+		String playerName = (String) session.getAttribute("playerName");
+		String hostPlayerName = (String) session.getAttribute("hostPlayerName");
+
+		Player[] players = Player.getPlayersWithRoomId(roomId);
+
+		List<String> playerNames = new ArrayList<>();
+		int playerIndex = 0;
+		for (int i = 0; i < players.length; i++) {
+			String name = players[i].getPlayerName();
+			if (name.equals(hostPlayerName)) {
+				playerNames.add(0, name);
+			} else {
+				playerNames.add(name);
 			}
-			
-			request.setAttribute("roomId", roomId);
-			request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));
-			request.setAttribute("playerIndex", playerIndex);
-			
-			request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);			
+			if (name.equals(playerName)) {
+				playerIndex = i;
+			}
 		}
-		else  {
-			 request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
-		}
+
+		request.setAttribute("roomId", roomId);
+		request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));
+		request.setAttribute("playerIndex", playerIndex);
+
+		request.getRequestDispatcher("/WEB-INF/view/waitPlayer.jsp").forward(request, response);
 	}
 
 	/**
