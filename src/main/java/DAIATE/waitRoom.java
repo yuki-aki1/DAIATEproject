@@ -99,7 +99,7 @@ public class waitRoom extends HttpServlet {
 			}
 
 			Subject subject = Subject.getSubject(room.getSubjectId());
-
+			
 
 			request.setAttribute("roomId", roomId);
 			request.setAttribute("playerNames", playerNames.toArray(new String[playerNames.size()]));

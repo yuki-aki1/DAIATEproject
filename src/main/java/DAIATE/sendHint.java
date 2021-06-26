@@ -37,6 +37,23 @@ public class sendHint extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		HttpSession session = request.getSession(false);
+		
+		if (session == null) {
+			request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);			
+			return ;
+		}
+		
+		String roomId = (String) session.getAttribute("roomId");
+		String playerName = (String) session.getAttribute("playerName");
+		String hostPlayerName = (String) session.getAttribute("hostPlayerName");
+
+		if (playerName.equals(hostPlayerName)) {
+			int roomState = 2;
+			Room.updateRoomState(roomId, roomState);
+		}
+		
 		doPost(request, response);
 	}
 
@@ -58,11 +75,11 @@ public class sendHint extends HttpServlet {
 			hint = "";
 		}
 		
-		
-		
 		String roomId = (String) session.getAttribute("roomId");
 		String playerName = (String) session.getAttribute("playerName");
 		String hostPlayerName = (String) session.getAttribute("hostPlayerName");
+
+		Player.updateHint(roomId, hint);
 		
 		Room room = Room.getRoom(roomId);
 		
@@ -93,20 +110,16 @@ public class sendHint extends HttpServlet {
 		request.setAttribute("playerIndex", playerIndex);
 		request.setAttribute("answerPlayerIndex", answerPlayerIndex);
 		request.setAttribute("subject", subject.getSubjectName());
-		
+
+		List<String> hints = new ArrayList<>();
+		for (int i = 0; i < players.length; i++) {
+			hints.add(players[i].getHint());
+		}
+		request.setAttribute("hints", hints.toArray(new String[hints.size()]));
+
 		if (room.getAnswerPlayerName().equals(playerName)) {
-			Set<String> hints = new HashSet<>();
-			for (Player player : players) {
-				hints.add(player.getHint());
-			}
-			request.setAttribute("hints", hints.toArray(new String[hints.size()]));
 			request.getRequestDispatcher("/WEB-INF/view/makeAnswer.jsp").forward(request, response);
 		} else {
-			String[] hints = new String[players.length];
-			for (int i = 0; i < players.length; i++) {
-				hints[i] = players[i].getHint();
-			}
-			request.setAttribute("hints", hints);
 			request.getRequestDispatcher("/WEB-INF/view/waitAnswer.jsp").forward(request, response);						
 		}
 	}
