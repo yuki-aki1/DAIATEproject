@@ -33,5 +33,12 @@ public class RandomGenerate {
 		// resulting string
 		return thebuffer.toString();
 	}
+	
+	public static int getRandomIndex(int length) {
+		
+		Random rand = new Random();
+		return rand.nextInt(length);
+		
+	}
 
 }
