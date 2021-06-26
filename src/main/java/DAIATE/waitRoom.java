@@ -98,8 +98,6 @@ public class waitRoom extends HttpServlet {
 				}
 			}
 			
-			
-			
 			Subject subject = Subject.getSubject(Integer.parseInt(roomId));
 			
 			request.setAttribute("roomId", roomId);

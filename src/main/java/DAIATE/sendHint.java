@@ -2,7 +2,9 @@ package DAIATE;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,6 +58,8 @@ public class sendHint extends HttpServlet {
 			hint = "";
 		}
 		
+		
+		
 		String roomId = (String) session.getAttribute("roomId");
 		String playerName = (String) session.getAttribute("playerName");
 		String hostPlayerName = (String) session.getAttribute("hostPlayerName");
@@ -91,16 +95,20 @@ public class sendHint extends HttpServlet {
 		request.setAttribute("subject", subject.getSubjectName());
 		
 		if (room.getAnswerPlayerName().equals(playerName)) {
-			
-			request.getRequestDispatcher("/WEB-INF/view/makeAnswer.jsp").forward(request, response);			
+			Set<String> hints = new HashSet<>();
+			for (Player player : players) {
+				hints.add(player.getHint());
+			}
+			request.setAttribute("hints", hints.toArray(new String[hints.size()]));
+			request.getRequestDispatcher("/WEB-INF/view/makeAnswer.jsp").forward(request, response);
 		} else {
+			String[] hints = new String[players.length];
+			for (int i = 0; i < players.length; i++) {
+				hints[i] = players[i].getHint();
+			}
+			request.setAttribute("hints", hints);
 			request.getRequestDispatcher("/WEB-INF/view/waitAnswer.jsp").forward(request, response);						
 		}
-		
-		
-		
-		request.getRequestDispatcher("/WEB-INF/view/makeAnswer.jsp").forward(request, response);			
-		
 	}
 
 }

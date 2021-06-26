@@ -54,6 +54,23 @@ public class Player {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static void updateHint(String sessionId, String hint) {
+		try (Connection con = DriverManager.getConnection(DatabaseInfo.DB_URL, DatabaseInfo.USER,
+				DatabaseInfo.PASSWORD)) {
+			System.out.println("Connected....");
+			String sqlStr = "update players set hint = ? where sessionId = ?";
+			try (PreparedStatement ps = con.prepareStatement(sqlStr)) {
+
+				ps.setString(1, hint);
+				ps.setString(2, sessionId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			System.out.println("Connection Failed. : " + e.toString());
+			throw new RuntimeException(e);
+		}	
+	}
 
 
 	public static Player getPlayersWithSessionId(String sessionId) {
@@ -153,7 +170,11 @@ public class Player {
 	}
 
 	public String getPlayerName() {
-		return playerName;
+		return this.playerName;
+	}
+	
+	public String getHint() {
+		return this.hint;
 	}
 
 }
